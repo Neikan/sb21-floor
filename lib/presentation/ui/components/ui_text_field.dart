@@ -10,7 +10,9 @@ class UiTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final String? labelText;
+  final int? maxLength;
   final Widget? suffix;
+  final String? Function(String?)? validator;
 
   const UiTextField({
     super.key,
@@ -18,7 +20,9 @@ class UiTextField extends StatelessWidget {
     this.inputFormatters,
     this.keyboardType,
     this.labelText,
+    this.maxLength,
     this.suffix,
+    this.validator,
   });
 
   @override
@@ -30,10 +34,12 @@ class UiTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText,
           suffix: suffix,
+          counterText: '',
         ),
         inputFormatters: inputFormatters,
         keyboardType: keyboardType,
-        validator: ValidationBuilder().build(),
+        maxLength: maxLength,
+        validator: validator ?? ValidationBuilder().build(),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:form_validator/form_validator.dart';
 
 // Project imports:
 import 'package:app_floor/data/models/app_person/app_person.dart';
@@ -16,6 +17,8 @@ import 'package:app_floor/presentation/ui/components/ui_text_field.dart';
 
 part 'components/ui_avatar.dart';
 part 'components/ui_avatar_picker.dart';
+
+const int _maxLengthAge = 3;
 
 class ScreenPerson extends StatefulWidget {
   final AppPerson? person;
@@ -58,6 +61,8 @@ class _ScreenPersonState extends State<ScreenPerson> {
 
   @override
   Widget build(BuildContext context) {
+    final validatorAge = ValidationBuilder().maxLength(_maxLengthAge).build();
+
     return Scaffold(
       appBar: UiAppBar(title: labelsPerson[keyTitle]!),
       body: SingleChildScrollView(
@@ -80,6 +85,8 @@ class _ScreenPersonState extends State<ScreenPerson> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   controller: _controllerAge,
+                  maxLength: _maxLengthAge,
+                  validator: validatorAge,
                 ),
                 UiTextField(
                   labelText: labelsPerson[keyPhone]!,
