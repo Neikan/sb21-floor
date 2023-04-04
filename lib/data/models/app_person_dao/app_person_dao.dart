@@ -24,12 +24,12 @@ abstract class AppPersonDao {
   @Query(
       'UPDATE AppPerson SET name = :name, surname = :surname, age = :age, avatar = :avatar, phone = :phone WHERE id = :id')
   Future<void> updatePerson(
+    int id,
     String name,
     String surname,
     int age,
+    String phone,
     String avatar,
-    int phone,
-    int id,
   );
 
   @insert

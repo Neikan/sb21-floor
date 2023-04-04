@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `AppPerson` (`id` INTEGER NOT NULL, `age` INTEGER NOT NULL, `phone` INTEGER NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `avatar` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `AppPerson` (`id` INTEGER NOT NULL, `age` INTEGER NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `phone` TEXT NOT NULL, `avatar` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -112,9 +112,9 @@ class _$AppPersonDao extends AppPersonDao {
             (AppPerson item) => <String, Object?>{
                   'id': item.id,
                   'age': item.age,
-                  'phone': item.phone,
                   'name': item.name,
                   'surname': item.surname,
+                  'phone': item.phone,
                   'avatar': item.avatar
                 },
             changeListener);
@@ -136,7 +136,7 @@ class _$AppPersonDao extends AppPersonDao {
             surname: row['surname'] as String,
             age: row['age'] as int,
             avatar: row['avatar'] as String,
-            phone: row['phone'] as int));
+            phone: row['phone'] as String));
   }
 
   @override
@@ -148,7 +148,7 @@ class _$AppPersonDao extends AppPersonDao {
             surname: row['surname'] as String,
             age: row['age'] as int,
             avatar: row['avatar'] as String,
-            phone: row['phone'] as int),
+            phone: row['phone'] as String),
         arguments: [id],
         queryableName: 'AppPerson',
         isView: false);
@@ -175,21 +175,21 @@ class _$AppPersonDao extends AppPersonDao {
             surname: row['surname'] as String,
             age: row['age'] as int,
             avatar: row['avatar'] as String,
-            phone: row['phone'] as int));
+            phone: row['phone'] as String));
   }
 
   @override
   Future<void> updatePerson(
+    int id,
     String name,
     String surname,
     int age,
+    String phone,
     String avatar,
-    int phone,
-    int id,
   ) async {
     await _queryAdapter.queryNoReturn(
-        'UPDATE AppPerson SET name = ?1, surname = ?2, age = ?3, avatar = ?4, phone = ?5 WHERE id = ?6',
-        arguments: [name, surname, age, avatar, phone, id]);
+        'UPDATE AppPerson SET name = ?2, surname = ?3, age = ?4, avatar = ?6, phone = ?5 WHERE id = ?1',
+        arguments: [id, name, surname, age, phone, avatar]);
   }
 
   @override

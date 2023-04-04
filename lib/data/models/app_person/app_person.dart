@@ -5,8 +5,8 @@ import 'package:floor/floor.dart';
 class AppPerson {
   @primaryKey
   int id;
-  int age, phone;
-  String name, surname, avatar;
+  int age;
+  String name, surname, phone, avatar;
 
   AppPerson({
     required this.id,

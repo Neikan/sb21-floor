@@ -46,12 +46,12 @@ class RepositoryPersonsImp extends RepositoryPersons {
   @override
   Future<void> update(AppPerson person, String card) async {
     await _personDao.updatePerson(
+      person.id,
       person.name,
       person.surname,
       person.age,
-      person.avatar,
       person.phone,
-      person.id,
+      person.avatar,
     );
 
     await _storage.write(
@@ -85,7 +85,7 @@ class RepositoryPersonsImp extends RepositoryPersons {
 
   Future<void> _initTablePersons() async {
     await _database.database.execute(
-      'CREATE TABLE IF NOT EXISTS `AppPerson` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `age` INTEGER NOT NULL, `avatar` TEXT NOT NULL, `phone` INTEGER NOT NULL, PRIMARY KEY (`id`))',
+      'CREATE TABLE IF NOT EXISTS `AppPerson` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `surname` TEXT NOT NULL, `age` INTEGER NOT NULL, `avatar` TEXT NOT NULL, `phone` TEXT NOT NULL, PRIMARY KEY (`id`))',
     );
   }
 

@@ -123,7 +123,7 @@ class _ScreenPersonState extends State<ScreenPerson> {
       name: _controllerName.text,
       surname: _controllerSurname.text,
       age: int.parse(_controllerAge.text),
-      phone: int.parse(_controllerPhone.text),
+      phone: _controllerPhone.text,
       avatar: _avatar,
     );
 
