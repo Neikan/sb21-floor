@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: library_private_types_in_public_api
+
 part of 'app_database.dart';
 
 // **************************************************************************
@@ -126,58 +128,58 @@ class _$AppPersonDao extends AppPersonDao {
   final InsertionAdapter<AppPerson> _appPersonInsertionAdapter;
 
   @override
-  Future<List<AppPerson>> findAllPersons() async {
-    return _queryAdapter.queryList('SELECT * FROM Person',
+  Future<List<AppPerson>> getPersons() async {
+    return _queryAdapter.queryList('SELECT * FROM AppPerson',
         mapper: (Map<String, Object?> row) => AppPerson(
-            row['id'] as int,
-            row['name'] as String,
-            row['surname'] as String,
-            row['age'] as int,
-            row['avatar'] as String,
-            row['phone'] as int));
+            id: row['id'] as int,
+            name: row['name'] as String,
+            surname: row['surname'] as String,
+            age: row['age'] as int,
+            avatar: row['avatar'] as String,
+            phone: row['phone'] as int));
   }
 
   @override
-  Stream<AppPerson?> findPersonById(int id) {
-    return _queryAdapter.queryStream('SELECT * FROM Person WHERE id = ?1',
+  Stream<AppPerson?> getPersonById(int id) {
+    return _queryAdapter.queryStream('SELECT * FROM AppPerson WHERE id = ?1',
         mapper: (Map<String, Object?> row) => AppPerson(
-            row['id'] as int,
-            row['name'] as String,
-            row['surname'] as String,
-            row['age'] as int,
-            row['avatar'] as String,
-            row['phone'] as int),
+            id: row['id'] as int,
+            name: row['name'] as String,
+            surname: row['surname'] as String,
+            age: row['age'] as int,
+            avatar: row['avatar'] as String,
+            phone: row['phone'] as int),
         arguments: [id],
-        queryableName: 'Person',
+        queryableName: 'AppPerson',
         isView: false);
   }
 
   @override
-  Future<void> deletePersonById(int id) async {
+  Future<void> removePersonById(int id) async {
     await _queryAdapter
-        .queryNoReturn('DELETE FROM Person WHERE id = ?1', arguments: [id]);
+        .queryNoReturn('DELETE FROM AppPerson WHERE id = ?1', arguments: [id]);
   }
 
   @override
   Future<void> dropTable() async {
-    await _queryAdapter.queryNoReturn('DROP TABLE Person');
+    await _queryAdapter.queryNoReturn('DROP TABLE AppPerson');
   }
 
   @override
-  Future<AppPerson?> findMaxId() async {
+  Future<AppPerson?> getMaxId() async {
     return _queryAdapter.query(
-        'SELECT * FROM Person WHERE id = (SELECT MAX(id) FROM Person)',
+        'SELECT * FROM AppPerson WHERE id = (SELECT MAX(id) FROM AppPerson)',
         mapper: (Map<String, Object?> row) => AppPerson(
-            row['id'] as int,
-            row['name'] as String,
-            row['surname'] as String,
-            row['age'] as int,
-            row['avatar'] as String,
-            row['phone'] as int));
+            id: row['id'] as int,
+            name: row['name'] as String,
+            surname: row['surname'] as String,
+            age: row['age'] as int,
+            avatar: row['avatar'] as String,
+            phone: row['phone'] as int));
   }
 
   @override
-  Future<void> update(
+  Future<void> updatePerson(
     String name,
     String surname,
     int age,
@@ -186,12 +188,12 @@ class _$AppPersonDao extends AppPersonDao {
     int id,
   ) async {
     await _queryAdapter.queryNoReturn(
-        'UPDATE Person SET name = ?1, surname = ?2, age = ?3, avatar = ?4, phone = ?5 WHERE id = ?6',
+        'UPDATE AppPerson SET name = ?1, surname = ?2, age = ?3, avatar = ?4, phone = ?5 WHERE id = ?6',
         arguments: [name, surname, age, avatar, phone, id]);
   }
 
   @override
-  Future<void> insertPerson(AppPerson person) async {
+  Future<void> addPerson(AppPerson person) async {
     await _appPersonInsertionAdapter.insert(person, OnConflictStrategy.abort);
   }
 }

@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 
 // Project imports:
 import 'package:app_floor/data/models/app_person/app_person.dart';
-import 'package:app_floor/data/models/app_person/app_person_dao.dart';
+import 'package:app_floor/data/models/app_person_dao/app_person_dao.dart';
 
 part 'app_database.g.dart';
 

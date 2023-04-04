@@ -4,15 +4,16 @@ import 'package:floor/floor.dart';
 @entity
 class AppPerson {
   @primaryKey
-  int id, age, phone;
+  int id;
+  int age, phone;
   String name, surname, avatar;
 
-  AppPerson(
-    this.id,
-    this.name,
-    this.surname,
-    this.age,
-    this.avatar,
-    this.phone,
-  );
+  AppPerson({
+    required this.id,
+    required this.name,
+    required this.surname,
+    required this.age,
+    required this.avatar,
+    required this.phone,
+  });
 }
