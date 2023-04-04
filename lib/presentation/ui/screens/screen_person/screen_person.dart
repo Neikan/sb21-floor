@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_floor/data/models/app_person/app_person.dart';
 import 'package:app_floor/domain/blocs/bloc_persons.dart';
 import 'package:app_floor/domain/blocs/bloc_persons_event.dart';
-import 'package:app_floor/domain/blocs/bloc_persons_state.dart';
 import 'package:app_floor/presentation/consts/keys.dart';
 import 'package:app_floor/presentation/consts/translations.dart';
 import 'package:app_floor/presentation/ui/components/ui_app_bar.dart';
@@ -40,6 +39,8 @@ class _ScreenPersonState extends State<ScreenPerson> {
   late final TextEditingController _controllerCard;
   late String _avatar;
 
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -60,76 +61,84 @@ class _ScreenPersonState extends State<ScreenPerson> {
     return Scaffold(
       appBar: UiAppBar(title: labelsPerson[keyTitle]!),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              UiTextField(
-                labelText: labelsPerson[keyName]!,
-                controller: _controllerName,
-              ),
-              UiTextField(
-                labelText: labelsPerson[keySurname]!,
-                controller: _controllerSurname,
-              ),
-              UiTextField(
-                labelText: labelsPerson[keyAge]!,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                controller: _controllerAge,
-              ),
-              UiTextField(
-                labelText: labelsPerson[keyPhone]!,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                controller: _controllerPhone,
-              ),
-              UiTextField(
-                labelText: labelsPerson[keyCard]!,
-                controller: _controllerCard,
-              ),
-              _UiAvatarPicker(
-                onSelect: _handleSetAvatar,
-                path: _avatar,
-              ),
-            ],
+        child: Form(
+          key: _form,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                UiTextField(
+                  labelText: labelsPerson[keyName]!,
+                  controller: _controllerName,
+                ),
+                UiTextField(
+                  labelText: labelsPerson[keySurname]!,
+                  controller: _controllerSurname,
+                ),
+                UiTextField(
+                  labelText: labelsPerson[keyAge]!,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  controller: _controllerAge,
+                ),
+                UiTextField(
+                  labelText: labelsPerson[keyPhone]!,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  controller: _controllerPhone,
+                ),
+                UiTextField(
+                  labelText: labelsPerson[keyCard]!,
+                  controller: _controllerCard,
+                ),
+                _UiAvatarPicker(
+                  onSelect: _handleSetAvatar,
+                  path: _avatar,
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      floatingActionButton: BlocBuilder<BlocPersons, BlocPersonsState>(
-        builder: (context, state) => FloatingActionButton(
-          onPressed: () {
-            final person = AppPerson(
-              id: widget.person?.id ??
-                  (context.read<BlocPersons>().repo.maxId + 1),
-              name: _controllerName.text,
-              surname: _controllerSurname.text,
-              age: int.parse(_controllerAge.text),
-              phone: int.parse(_controllerPhone.text),
-              avatar: _avatar,
-            );
-
-            final card = _controllerCard.text;
-
-            if (widget.person != null) {
-              context.read<BlocPersons>().add(
-                    BlocPersonsEventUpdate(person: person, card: card),
-                  );
-            } else {
-              context.read<BlocPersons>().add(
-                    BlocPersonsEventAdd(person: person, card: card),
-                  );
-            }
-
-            Navigator.of(context).pop();
-          },
-          child: const Icon(Icons.done),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _handleValidate,
+        child: const Icon(Icons.done),
       ),
     );
   }
 
   void _handleSetAvatar(String path) {
     _avatar = path;
+  }
+
+  void _handleValidate() {
+    if (_form.currentState?.validate() == true) {
+      _handleSubmit();
+    }
+  }
+
+  void _handleSubmit() {
+    final person = AppPerson(
+      id: widget.person?.id ?? context.read<BlocPersons>().repo.maxId + 1,
+      name: _controllerName.text,
+      surname: _controllerSurname.text,
+      age: int.parse(_controllerAge.text),
+      phone: int.parse(_controllerPhone.text),
+      avatar: _avatar,
+    );
+
+    final card = _controllerCard.text;
+
+    if (widget.person != null) {
+      context.read<BlocPersons>().add(
+            BlocPersonsEventUpdate(person: person, card: card),
+          );
+    } else {
+      context.read<BlocPersons>().add(
+            BlocPersonsEventAdd(person: person, card: card),
+          );
+    }
+
+    Navigator.of(context).pop();
   }
 }
