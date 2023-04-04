@@ -18,7 +18,13 @@ class _UiAvatar extends StatelessWidget {
       child: Container(
         width: 96,
         height: 96,
-        color: isSelected ? Colors.green : Colors.green.shade100,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: isSelected ? Colors.green : Colors.green.shade100,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(16.0),
+          ),
+        ),
         child: Image.asset(path),
       ),
     );
